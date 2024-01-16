@@ -1,17 +1,35 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Snake Game</title>
   <link rel="stylesheet" href="assets/style.css">
 </head>
+
 <body>
   <main class="canvas">
-    <div id="snake"></div>
-    <div id="fruit"></div>
+    <div class="infos">
+      <h1 class="title">SNAKE GAME</h1>
+      <div class="fruitrecord">
+        <div class="fruits">
+          <img src="assets/imgs/fruit.png" alt="fruit">
+          <p>0</p>
+        </div>
+        <div class="record">
+          <img src="assets/imgs/trophy.png" alt="record">
+          <p>0</p>
+        </div>
+      </div>
+    </div>
+    <div class="divin">
+      <div id="snake"></div>
+      <img id="fruit" src="assets/imgs/fruit.png">
+    </div>
   </main>
 
   <script src="assets/main.js"></script>
 </body>
+
 </html>
