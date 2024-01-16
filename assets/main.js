@@ -1,8 +1,8 @@
 function Game() {
   this.snake = {
     element: document.querySelector('#snake'),
-    left: 50,
-    top: 50,
+    left: 0,
+    top: 0,
     setInitialPosition() {
       this.element.style.left = this.left + '%';
       this.element.style.top = this.top + '%';
@@ -11,8 +11,8 @@ function Game() {
 
   this.fruit = {
     element: document.querySelector('#fruit'),
-    left: 60,
-    top: 50,
+    left: 10,
+    top: 0,
     setInitialPosition() {
       this.element.style.left = this.left + '%';
       this.element.style.top = this.top + '%';
