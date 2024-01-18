@@ -5,25 +5,28 @@ function Game() {
   this.snake = {
     element: document.querySelector('#snake'),
     speed: 350,
-    left: 250,
-    top: 250,
+    snakePositions: [
+      {left: 10, top: 10}
+    ],
     setInitialPosition() {
-      this.element.style.left = this.left + 'px';
-      this.element.style.top = this.top + 'px';
+      this.element.style.left = (this.left * 25) + 'px';
+      this.element.style.top = (this.top * 25) + 'px';
     }
   };
 
   this.fruit = {
     element: document.querySelector('#fruit'),
-    left: 25,
-    top: 100,
-    setInitialPosition() {
-      this.element.style.left = this.left + 'px';
-      this.element.style.top = this.top + 'px';
-    }
+    left: 0,
+    top: 0,
+    getAleatoryPosition() {
+      this.left = Math.floor(Math.random() * 20);
+      this.top = Math.floor(Math.random() * (19 - (-1)) + (-1));
+      this.element.style.left = (this.left * 25) + 'px';
+      this.element.style.top = (this.top * 25) + 'px';
+    },
   }
-  this.snake.setInitialPosition()
-  this.fruit.setInitialPosition()
+  this.snake.setInitialPosition();
+  this.fruit.getAleatoryPosition();
   window.addEventListener('keydown', (e) => this.move(e))
 
   this.move = (event) => {
