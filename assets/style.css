@@ -78,10 +78,10 @@ body, html {
   width: 25px;
   height: 25px;
   position: relative;
-  border-radius: 20px 5px 5px 20px;
 }
 
 #fruit {
+  background-color: red;
   width: 25px;
   height: 25px;
   position: relative;

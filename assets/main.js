@@ -2,54 +2,59 @@
 // Cada bloquinho de tela possui 25px, então o left e top tem que ser multiplos de 25px.
 // Quanto menor snake.speed mais rápido a serpente fia.
 function Game() {
+  this.speed = 300;
+  const interval = setInterval(this.move(), this.speed);
+  this.direction = 'up';
+  const div = document.querySelector('.divin');
   this.snake = {
-    element: document.querySelector('#snake'),
-    speed: 350,
-    snakePositions: [
-      {left: 10, top: 10}
-    ],
-    setInitialPosition() {
-      this.element.style.left = (this.left * 25) + 'px';
-      this.element.style.top = (this.top * 25) + 'px';
+    snakePositions: [],
+    makeOneMoreSnakeBit() {
+      if(this.snakePositions != 0) {
+        this.snakePositions.push({});
+
+        return;
+      }
+      this.snakePositions.push({left: 9, top: 9});
+      const newSnake = document.createElement('div');
+      newSnake.id = 'snake';
+      div.appendChild(newSnake);
     }
   };
 
   this.fruit = {
-    element: document.querySelector('#fruit'),
     left: 0,
     top: 0,
+    getNewFruit() {
+      this.newFruit = document.createElement('div');
+      this.newFruit.id = 'fruit';
+      div.appendChild(this.newFruit);
+    },
     getAleatoryPosition() {
+      if(!this.newFruit) this.getNewFruit()
       this.left = Math.floor(Math.random() * 20);
       this.top = Math.floor(Math.random() * (19 - (-1)) + (-1));
-      this.element.style.left = (this.left * 25) + 'px';
-      this.element.style.top = (this.top * 25) + 'px';
+      this.newFruit.style.left = (this.left * 25) + 'px';
+      this.newFruit.style.top = (this.top * 25) + 'px';
     },
   }
-  this.snake.setInitialPosition();
+
+  this.snake.makeOneMoreSnakeBit();
   this.fruit.getAleatoryPosition();
-  window.addEventListener('keydown', (e) => this.move(e))
+  window.addEventListener('keydown', this.updateKey(e));
+
+  this.updateKey = (e) {
+    const key = e.key;
+    if ((key === 'w') || (key == 'ArrowUp')) this.direction = 'up';
+    if ((key === 'a') || (key === 'ArrowLeft')) this.direction = 'left';
+    if ((key === 's') || (key === 'ArrowDown')) this.direction = 'down';
+    if ((key === 'd') || (key === 'ArrowRight'))this.direction = 'right';
+  }
 
   this.move = (event) => {
     if (event.key === this.lastKey) return;
     this.lastKey = event.key;
-    clearInterval(this.interval);
 
-    if ((this.lastKey === 'w') || (this.lastKey == 'ArrowUp')) {
-      this.snake.element.style.top = `${this.snake.top -= 25}px`
-      this.interval = setInterval(() => { this.snake.element.style.top = `${this.snake.top -= 25}px` }, this.snake.speed);
-    }
-    if ((this.lastKey === 'a') || (this.lastKey === 'ArrowLeft')) {
-      this.snake.element.style.left = `${this.snake.left -= 25}px`
-      this.interval = setInterval(() => { this.snake.element.style.left = `${this.snake.left -= 25}px` }, this.snake.speed);
-    }
-    if ((this.lastKey === 's') || (this.lastKey === 'ArrowDown')) {
-      this.snake.element.style.top = `${this.snake.top += 25}px`
-      this.interval = setInterval(() => { this.snake.element.style.top = `${this.snake.top += 25}px` }, this.snake.speed);
-    }
-    if ((this.lastKey === 'd') || (this.lastKey === 'ArrowRight')) {
-      this.snake.element.style.left = `${this.snake.left += 25}px`
-      this.interval = setInterval(() => { this.snake.element.style.left = `${this.snake.left += 25}px` }, this.snake.speed);
-    }
+
 
   }
 
