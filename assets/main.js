@@ -12,13 +12,9 @@ function Game() {
         const newSnake = document.createElement('div');
         newSnake.classList.add('snake');
         div.appendChild(newSnake);
-        if (game.direction === 'up') {
-          this.snakePositions.push({ left: this.snakePositions[this.snakePositions.length - 1].left, top: this.snakePositions[this.snakePositions.length - 1].top + 1, el: newSnake })
-          console.log(this.snakePositions[this.snakePositions.length - 1].left, this.snakePositions[this.snakePositions.length - 1].top)
-          newSnake.style.left = this.snakePositions[this.snakePositions.length - 1].left * 25 + 'px'
-          newSnake.style.top = (this.snakePositions[this.snakePositions.length - 1].top) * 25 + 'px'
-          console.log(this.snakePositions[1].left, this.snakePositions[1].top)
-        }
+        this.snakePositions.unshift({ left: game.fruit.left, top: game.fruit.top, el: newSnake })
+        newSnake.style.left = game.fruit.left * 25 + 'px'
+        newSnake.style.top = game.fruit.top * 25 + 'px'
 
         return;
       }
@@ -61,60 +57,39 @@ function Game() {
   };
 
   this.move = () => {
-    if (this.direction === 'up') {
-      for (snakeObj of this.snake.snakePositions) {
-        if (snakeObj.top === 0) {
-          snakeObj.top = 19
-          snakeObj.el.style.top = snakeObj.top * 25 + 'px'
-          continue;
-        }
-        snakeObj.top--
-        snakeObj.el.style.top = snakeObj.top * 25 + 'px'
-      }
+    for(let snakeIndex = this.snake.snakePositions.length - 1; snakeIndex > 0; snakeIndex--) {
+      let {left, top} = this.snake.snakePositions[snakeIndex - 1];
+      this.snake.snakePositions[snakeIndex].left = left;
+      this.snake.snakePositions[snakeIndex].top = top;
+      this.snake.snakePositions[snakeIndex].el.style.left = left * 25 + 'px';
+      this.snake.snakePositions[snakeIndex].el.style.top = top * 25 + 'px';
     }
 
-    if (this.direction === 'down') {
-      for (snakeObj of this.snake.snakePositions) {
-        if (snakeObj.top === 19) {
-          snakeObj.top = 0
-          snakeObj.el.style.top = snakeObj.top * 25 + 'px'
-          continue;
-        }
-        snakeObj.top++
-        snakeObj.el.style.top = snakeObj.top * 25 + 'px'
-      }
-    }
-
-    if (this.direction === 'left') {
-      for (snakeObj of this.snake.snakePositions) {
-        if (snakeObj.left === 0) {
-          snakeObj.left = 19
-          snakeObj.el.style.left = snakeObj.left * 25 + 'px'
-          continue;
-        }
-        snakeObj.left--
-        snakeObj.el.style.left = snakeObj.left * 25 + 'px'
-      }
-    }
-
-    if (this.direction === 'right') {
-      for (snakeObj of this.snake.snakePositions) {
-        if (snakeObj.left === 19) {
-          snakeObj.left = 0
-          snakeObj.el.style.left = snakeObj.left * 25 + 'px'
-          continue;
-        }
-        snakeObj.left++
-        snakeObj.el.style.left = snakeObj.left * 25 + 'px'
-      }
+    switch(this.direction) {
+      case 'up':
+        this.snake.snakePositions[0].top = this.snake.snakePositions[0].top - 1
+        this.snake.snakePositions[0].el.style.top = this.snake.snakePositions[0].top * 25 + 'px';
+        break;
+      case 'down':
+          this.snake.snakePositions[0].top = this.snake.snakePositions[0].top + 1
+          this.snake.snakePositions[0].el.style.top = this.snake.snakePositions[0].top * 25 + 'px';
+          break;
+      case 'left':
+            this.snake.snakePositions[0].left = this.snake.snakePositions[0].left - 1
+            this.snake.snakePositions[0].el.style.left = this.snake.snakePositions[0].left * 25 + 'px';
+            break;
+      case 'right':
+        this.snake.snakePositions[0].left = this.snake.snakePositions[0].left + 1
+        this.snake.snakePositions[0].el.style.left = this.snake.snakePositions[0].left * 25 + 'px';
+        break;
     }
 
     if ((this.snake.snakePositions[0].left === this.fruit.left) && (this.snake.snakePositions[0].top === this.fruit.top)) {
-      this.fruit.getAleatoryPosition();
       this.snake.makeOneMoreSnakeBit();
+      this.fruit.getAleatoryPosition();
     }
   }
 
-  this.interval = setInterval(() => this.move(), 300);
+  this.interval = setInterval(() => this.move(), 200);
 }
 const game = new Game();
