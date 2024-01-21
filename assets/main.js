@@ -57,31 +57,61 @@ function Game() {
   };
 
   this.move = () => {
-    for(let snakeIndex = this.snake.snakePositions.length - 1; snakeIndex > 0; snakeIndex--) {
-      let {left, top} = this.snake.snakePositions[snakeIndex - 1];
+    for (let snakeIndex = this.snake.snakePositions.length - 1; snakeIndex > 0; snakeIndex--) {
+      if (this.snake.snakePositions[0].left === this.snake.snakePositions[1].left && this.snake.snakePositions[0].top === this.snake.snakePositions[1].top) {
+        break;
+      }
+      let { left, top } = this.snake.snakePositions[snakeIndex - 1];
       this.snake.snakePositions[snakeIndex].left = left;
       this.snake.snakePositions[snakeIndex].top = top;
       this.snake.snakePositions[snakeIndex].el.style.left = left * 25 + 'px';
       this.snake.snakePositions[snakeIndex].el.style.top = top * 25 + 'px';
     }
 
-    switch(this.direction) {
+    switch (this.direction) {
       case 'up':
+        if (this.snake.snakePositions[0].top === 0) {
+          this.snake.snakePositions[0].top = 19
+          this.snake.snakePositions[0].el.style.top = 19 * 25 + 'px'
+          break;
+        }
         this.snake.snakePositions[0].top = this.snake.snakePositions[0].top - 1
         this.snake.snakePositions[0].el.style.top = this.snake.snakePositions[0].top * 25 + 'px';
         break;
       case 'down':
-          this.snake.snakePositions[0].top = this.snake.snakePositions[0].top + 1
-          this.snake.snakePositions[0].el.style.top = this.snake.snakePositions[0].top * 25 + 'px';
+        if (this.snake.snakePositions[0].top === 19) {
+          this.snake.snakePositions[0].top = 0
+          this.snake.snakePositions[0].el.style.top = 0 * 25 + 'px'
           break;
+        }
+        this.snake.snakePositions[0].top = this.snake.snakePositions[0].top + 1
+        this.snake.snakePositions[0].el.style.top = this.snake.snakePositions[0].top * 25 + 'px';
+        break;
       case 'left':
-            this.snake.snakePositions[0].left = this.snake.snakePositions[0].left - 1
-            this.snake.snakePositions[0].el.style.left = this.snake.snakePositions[0].left * 25 + 'px';
-            break;
+        if (this.snake.snakePositions[0].left === 0) {
+          this.snake.snakePositions[0].left = 19
+          this.snake.snakePositions[0].el.style.left = 19 * 25 + 'px'
+          break;
+        }
+        this.snake.snakePositions[0].left = this.snake.snakePositions[0].left - 1
+        this.snake.snakePositions[0].el.style.left = this.snake.snakePositions[0].left * 25 + 'px';
+        break;
       case 'right':
+        if (this.snake.snakePositions[0].left === 19) {
+          this.snake.snakePositions[0].left = 0
+          this.snake.snakePositions[0].el.style.left = 0 * 25 + 'px'
+          break;
+        }
         this.snake.snakePositions[0].left = this.snake.snakePositions[0].left + 1
         this.snake.snakePositions[0].el.style.left = this.snake.snakePositions[0].left * 25 + 'px';
         break;
+    }
+
+    /// FAZER SISTEMA DE GAME OVER!!!
+    for(snakeBit of this.snake.snakePositions) {
+      if(this.snake.snakePositions.length > 1 && (this.snake.snakePositions[0].left === snakeBit.left && this.snake.snakePositions[0].top === snakeBit.top)) {
+        alert('game over!')
+      }
     }
 
     if ((this.snake.snakePositions[0].left === this.fruit.left) && (this.snake.snakePositions[0].top === this.fruit.top)) {
@@ -90,6 +120,6 @@ function Game() {
     }
   }
 
-  this.interval = setInterval(() => this.move(), 200);
+  this.interval = setInterval(() => this.move(), 50);
 }
 const game = new Game();
