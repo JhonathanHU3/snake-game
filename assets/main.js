@@ -2,7 +2,7 @@
 // Cada bloquinho de tela possui 25px, então o left e top tem que ser multiplos de 25px.
 // Quanto menor snake.speed mais rápido a serpente fia.
 function Game() {
-  this.speed = 300;
+  this.speed = 80;
   this.direction = 'up';
   const div = document.querySelector('.divin');
   this.snake = {
@@ -12,7 +12,7 @@ function Game() {
         const newSnake = document.createElement('div');
         newSnake.classList.add('snake');
         div.appendChild(newSnake);
-        this.snakePositions.unshift({ left: game.fruit.left, top: game.fruit.top, el: newSnake })
+        this.snakePositions.push({ left: game.fruit.left, top: game.fruit.top, el: newSnake })
         newSnake.style.left = game.fruit.left * 25 + 'px'
         newSnake.style.top = game.fruit.top * 25 + 'px'
 
@@ -108,9 +108,10 @@ function Game() {
     }
 
     /// FAZER SISTEMA DE GAME OVER!!!
-    for(snakeBit of this.snake.snakePositions) {
-      if(this.snake.snakePositions.length > 1 && (this.snake.snakePositions[0].left === snakeBit.left && this.snake.snakePositions[0].top === snakeBit.top)) {
+    for(let snakeIndex = 1; snakeIndex < this.snake.snakePositions.length; snakeIndex++) {
+      if(this.snake.snakePositions.length > 1 && (this.snake.snakePositions[0].left === this.snake.snakePositions[snakeIndex].left && this.snake.snakePositions[0].top === this.snake.snakePositions[snakeIndex].top)) {
         alert('game over!')
+        return;
       }
     }
 
@@ -120,6 +121,6 @@ function Game() {
     }
   }
 
-  this.interval = setInterval(() => this.move(), 50);
+  this.interval = setInterval(this.move, this.speed);
 }
 const game = new Game();
