@@ -110,7 +110,7 @@ function Game() {
     /// FAZER SISTEMA DE GAME OVER!!!
     for(let snakeIndex = 1; snakeIndex < this.snake.snakePositions.length; snakeIndex++) {
       if(this.snake.snakePositions.length > 1 && (this.snake.snakePositions[0].left === this.snake.snakePositions[snakeIndex].left && this.snake.snakePositions[0].top === this.snake.snakePositions[snakeIndex].top)) {
-        alert('game over!')
+        this.gameOver();
         return;
       }
     }
@@ -121,6 +121,11 @@ function Game() {
     }
   }
 
+  this.gameOver = () => {
+    alert('Game over!');
+    clearInterval(this.interval);
+  }
+  
   this.interval = setInterval(this.move, this.speed);
 }
 const game = new Game();
