@@ -1,10 +1,13 @@
 // Autor: Jhonathan Pimenta
 // Cada bloquinho de tela possui 25px, então o left e top tem que ser multiplos de 25px.
-// Quanto menor snake.speed mais rápido a serpente fia.
+// Quanto menor snake.speed mais rápido a serpente se move.
 function Game() {
-  this.speed = 80;
+  this.speed = 65;
   this.direction = 'up';
   const div = document.querySelector('.divin');
+  const startDisplay = document.querySelector('#start-display');
+  const endDisplay = document.querySelector('#ending-display');
+
   this.snake = {
     snakePositions: [],
     makeOneMoreSnakeBit() {
@@ -44,9 +47,13 @@ function Game() {
     },
   }
 
-  this.snake.makeOneMoreSnakeBit();
-  this.fruit.getAleatoryPosition();
-  window.addEventListener('keydown', e => this.updateKey(e));
+  this.start = () => {
+    this.snake.makeOneMoreSnakeBit();
+    this.fruit.getAleatoryPosition();
+    window.addEventListener('keydown', e => this.updateKey(e));
+    this.interval = setInterval(this.move, this.speed);
+    startDisplay.style.display = 'none';
+  }
 
   this.updateKey = (e) => {
     const key = e.key;
@@ -107,7 +114,6 @@ function Game() {
         break;
     }
 
-    /// FAZER SISTEMA DE GAME OVER!!!
     for(let snakeIndex = 1; snakeIndex < this.snake.snakePositions.length; snakeIndex++) {
       if(this.snake.snakePositions.length > 1 && (this.snake.snakePositions[0].left === this.snake.snakePositions[snakeIndex].left && this.snake.snakePositions[0].top === this.snake.snakePositions[snakeIndex].top)) {
         this.gameOver();
@@ -122,10 +128,15 @@ function Game() {
   }
 
   this.gameOver = () => {
-    alert('Game over!');
+    this.fruit.newFruit.remove();
+    for(snakeBit of this.snake.snakePositions) {
+      snakeBit.el.remove();
+    }
     clearInterval(this.interval);
+    endDisplay.style.display = 'flex';
   }
-  
-  this.interval = setInterval(this.move, this.speed);
 }
 const game = new Game();
+
+startButton =  document.querySelector('#startButton');
+startButton.addEventListener('click', game.start);
